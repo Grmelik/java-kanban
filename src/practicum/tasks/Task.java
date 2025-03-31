@@ -1,22 +1,20 @@
+package practicum.tasks;
+
 import java.util.Objects;
 
 public class Task {
-    private String name;
-    private String description;
-    private int id;
-    private TaskStatus status;
+    protected String name;
+    protected String description;
+    protected int id;
+    protected TaskStatus status;
 
-    public Task(String name, String description, TaskStatus status) {
+    public Task(String name, String description, int id, TaskStatus status) {
         this.name = name;
         this.description = description;
-        this.id = -1;
-        this.status = status;
-    }
-
-    /*public Task(int id, TaskStatus status) {
+        //this.id = -1;
         this.id = id;
         this.status = status;
-    }*/
+    }
 
     public String getName() {
         return name;
@@ -56,12 +54,11 @@ public class Task {
         int result;
         result = 31 * Objects.hash(name, description, id, status);
         return result;
-        //return Objects.hash(name, description, id, status);
     }
 
     @Override
     public String toString() {
-        String partOne = "ID=[" + id + "] ";
+        String partOne = '\n' + "ID=[" + id + "] ";
         String partTwo = String.valueOf(getClass()).substring(6);
         String partThree = ": " + name + " (" + description + ")" + ". Статус " + status;
 
@@ -74,13 +71,5 @@ public class Task {
 
         result = partOne + result + partThree;
         return result;
-
-        /*if ( )
-        return getClass() + "{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                '}';*/
     }
 }
