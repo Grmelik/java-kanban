@@ -11,7 +11,6 @@ public class Task {
     public Task(String name, String description, int id, TaskStatus status) {
         this.name = name;
         this.description = description;
-        //this.id = -1;
         this.id = id;
         this.status = status;
     }
@@ -20,16 +19,16 @@ public class Task {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public TaskStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TaskStatus status) {
-        this.status = status;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getId() {
@@ -38,6 +37,14 @@ public class Task {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 
     @Override
