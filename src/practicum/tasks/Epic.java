@@ -26,6 +26,13 @@ public class Epic extends Task{
         }
     }
 
+    // Очистить список задач
+    public void clearSubtasksList() {
+        if (!subtasksList.isEmpty()){
+            subtasksList.clear();
+        }
+    }
+
     @Override
     public String toString() {
         return '\n' + "ID=[" + id + "] Эпик : " + name + " (" + description + "). Статус " + status +
