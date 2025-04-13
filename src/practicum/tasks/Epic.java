@@ -3,7 +3,7 @@ package practicum.tasks;
 import java.util.ArrayList;
 
 public class Epic extends Task{
-    private ArrayList<Integer> subtasksList = new ArrayList<>();
+    private final ArrayList<Integer> subtasksList = new ArrayList<>();
 
     public Epic(String name, String description, int id, TaskStatus status) {
         super(name, description, id, status);
@@ -35,7 +35,6 @@ public class Epic extends Task{
 
     @Override
     public String toString() {
-        return '\n' + "ID=[" + id + "] Эпик : " + name + " (" + description + "). Статус " + status +
-                ". Список подзадач = " + subtasksList;
+        return "ID=[" + id + "]: " + name + " (" + description + "). Статус " + status;
     }
 }

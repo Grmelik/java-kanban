@@ -65,18 +65,6 @@ public class Task {
 
     @Override
     public String toString() {
-        String partOne = '\n' + "ID=[" + id + "] ";
-        String partTwo = String.valueOf(getClass()).substring(6);
-        String partThree = ": " + name + " (" + description + ")" + ". Статус " + status;
-
-        String result = switch (partTwo) {
-            case "Task" -> "Задача ";
-            case "Epic" -> "Эпик ";
-            case "Subtask" -> "  ==> Подзадача ";
-            default -> "";
-        };
-
-        result = partOne + result + partThree;
-        return result;
+        return "ID=[" + id + "]: " + name + " (" + description + "). Статус " + status + ".";
     }
 }

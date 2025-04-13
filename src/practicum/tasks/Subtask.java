@@ -18,7 +18,6 @@ public class Subtask extends Task{
 
     @Override
     public String toString() {
-        return '\n' + "ID=[" + id + "] Подзадача : " + name + " (" + description + "). Статус " + status +
-                ". Родительский эпик = " + epicId;
+        return "ID=[" + id + "]: " + name + " (" + description + "). Статус " + status;
     }
 }

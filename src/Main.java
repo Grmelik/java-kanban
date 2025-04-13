@@ -1,11 +1,11 @@
-import practicum.managers.TaskManager;
+import practicum.managers.InMemoryTaskManager;
 import practicum.tasks.*;
 
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Поехали!");
-        TaskManager tm = new TaskManager();
+        InMemoryTaskManager tm = new InMemoryTaskManager();
 
         // Тестирование
         // Создайте две задачи, а также эпик с двумя подзадачами и эпик с одной подзадачей.
@@ -18,10 +18,8 @@ public class Main {
         tm.createSubtask(new Subtask("Спринт 4", "Сдать задание 4-го спринта", 1007, tm.generateId(), TaskStatus.NEW)); //1008
 
         // Распечатайте списки эпиков, задач и подзадач через System.out.println(..).
-        System.out.println('\n' + "== Распечатайте списки эпиков, задач и подзадач ==================================");
-        System.out.println(tm.getAllTasks());
-        System.out.println(tm.getAllEpics());
-        System.out.println(tm.getAllSubtasks());
+        System.out.println('\n' + "== Просмотр событий (задачи, эпики, подзадачи, история) ==========================");
+        tm.printAllTasks(tm);
 
         // Измените статусы созданных объектов, распечатайте их.
         // Проверьте, что статус задачи и подзадачи сохранился, а статус эпика рассчитался по статусам подзадач.
@@ -58,9 +56,7 @@ public class Main {
         // Эпик 2 с Id=1007
         Epic epic2 = tm.getEpicById(1007);
         tm.updateEpic(epic2);
-        System.out.println(tm.getAllTasks());
-        System.out.println(tm.getAllEpics());
-        System.out.println(tm.getAllSubtasks());
+        tm.printAllTasks(tm);
 
         // И, наконец, попробуйте удалить одну из задач и один из эпиков.
         System.out.println('\n' + "== Удалить одну из задач и один из эпиков ========================================");
@@ -68,8 +64,6 @@ public class Main {
         tm.deleteEpicById(1007);
         //tm.deleteAllTasks();
         //tm.deleteAllEpics();
-        System.out.println(tm.getAllTasks());
-        System.out.println(tm.getAllEpics());
-        System.out.println(tm.getAllSubtasks());
+        tm.printAllTasks(tm);
     }
 }
