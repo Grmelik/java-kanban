@@ -34,7 +34,7 @@ public interface TaskManager {
 
     void createEpic(Epic epic);
 
-    void createSubtask(Subtask subtask);
+    void createSubtask(Subtask subtask, int epicId);
 
     // e. Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
     void updateTask(Task task);
@@ -51,7 +51,9 @@ public interface TaskManager {
     void deleteSubtaskById(int id);
 
     // g. Получение списка всех подзадач определённого эпика.
-    ArrayList<Subtask> getSubtasksOfEpic(int epicId);
+    List<Subtask> getSubtasksOfEpic(int epicId);
 
-    public void printAllTasks(TaskManager manager);
+    List<Task> getHistory();
+
+    public void printAllTasks();
 }

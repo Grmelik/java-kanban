@@ -9,5 +9,5 @@ public interface HistoryManager {
     void add(Task task);
 
     // Последние 10 просмотренных задач
-    List <Task> getHistory();
+    List<Task> getHistory();
 }

@@ -5,13 +5,13 @@ import practicum.tasks.*;
 
 public class InMemoryTaskManager implements TaskManager {
     public static int newId = 1000;
-    private HashMap<Integer, Task> tasksMap = new HashMap<>();
-    private HashMap<Integer, Epic> epicsMap = new HashMap<>();
-    private HashMap<Integer, Subtask> subtasksMap = new HashMap<>();
-    public static HistoryManager historyManager = Managers.getDefaultHistory();
+    private Map<Integer, Task> tasksMap = new HashMap<>();
+    private Map<Integer, Epic> epicsMap = new HashMap<>();
+    private Map<Integer, Subtask> subtasksMap = new HashMap<>();
+    public HistoryManager historyManager = Managers.getDefaultHistory();
 
     // Генерация идентификатора
-    public int generateId() {
+    private int generateId() {
         newId = newId + 1;
         return newId;
     }
@@ -56,6 +56,7 @@ public class InMemoryTaskManager implements TaskManager {
     // c.Получение по идентификатору
     @Override
     public Task getTaskById(int id) {
+        //System.out.println("BEM1 getTaskById(int id)="+getTaskById(id));
         historyManager.add(tasksMap.get(id));
         return tasksMap.get(id);
     }
@@ -75,20 +76,20 @@ public class InMemoryTaskManager implements TaskManager {
     // d.Создание. Сам объект должен передаваться в качестве параметра
     @Override
     public void createTask(Task task) {
-        task.setId(task.getId()+1);
+        task.setId(generateId());
         tasksMap.put(task.getId(), task);
     }
 
     @Override
     public void createEpic(Epic epic) {
-        epic.setId(epic.getId()+1);
+        epic.setId(generateId());
         epicsMap.put(epic.getId(), epic);
     }
 
     @Override
-    public void createSubtask(Subtask subtask) {
-        subtask.setId(subtask.getId()+1);
-        Epic epic = getEpicById(subtask.getEpicId());
+    public void createSubtask(Subtask subtask, int epicId) {
+        subtask.setId(generateId());
+        Epic epic = getEpicById(epicId);
         epic.addSubtask(subtask.getId());
         subtasksMap.put(subtask.getId(), subtask);
     }
@@ -117,7 +118,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     // Обновление статуса эпика
-    public void updateEpicStatus(int id) {
+    private void updateEpicStatus(int id) {
         ArrayList<Epic> epics = new ArrayList<>(epicsMap.values());
         ArrayList<TaskStatus> statuses = new ArrayList<>();
         TaskStatus status;
@@ -191,7 +192,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     // g. Получение списка всех подзадач определённого эпика.
     @Override
-    public ArrayList<Subtask> getSubtasksOfEpic(int epicId) {
+    public List<Subtask> getSubtasksOfEpic(int epicId) {
         Epic epic = epicsMap.get(epicId);
         ArrayList<Subtask> subtasks = new ArrayList<>();
 
@@ -199,31 +200,36 @@ public class InMemoryTaskManager implements TaskManager {
             subtasks.add(subtasksMap.get(subtaskId));
         }
 
-        return subtasks;
+        return new ArrayList<>(subtasks);
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 
     // Взято из сценария 5-го спринта - печать событий
     @Override
-    public void printAllTasks(TaskManager manager) {
+    public void printAllTasks() {
         System.out.println("Задачи:");
-        for (Task task : manager.getAllTasks()) {
+        for (Task task : getAllTasks()) {
             System.out.println(task);
         }
         System.out.println("Эпики:");
-        for (Task epic : manager.getAllEpics()) {
+        for (Task epic : getAllEpics()) {
             System.out.println(epic);
 
-            for (Task task : manager.getSubtasksOfEpic(epic.getId())) {
+            for (Task task : getSubtasksOfEpic(epic.getId())) {
                 System.out.println("--> " + task);
             }
         }
         System.out.println("Подзадачи:");
-        for (Task subtask : manager.getAllSubtasks()) {
+        for (Task subtask : getAllSubtasks()) {
             System.out.println(subtask);
         }
 
         System.out.println("История:");
-        for (Task task : historyManager.getHistory()) {
+        for (Task task : getHistory()) {
             System.out.println(task);
         }
     }

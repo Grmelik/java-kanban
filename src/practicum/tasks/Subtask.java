@@ -3,9 +3,9 @@ package practicum.tasks;
 public class Subtask extends Task{
     private int epicId; // Id родительского эпика
 
-    public Subtask(String name, String description, int epicId, int id, TaskStatus status) {
-        super(name, description, id, status);
-        this.epicId = epicId;
+    public Subtask(String name, String description, TaskStatus status) {
+        super(name, description, status);
+        this.epicId = -1;
     }
 
     public int getEpicId() {
@@ -18,6 +18,6 @@ public class Subtask extends Task{
 
     @Override
     public String toString() {
-        return "ID=[" + id + "]: " + name + " (" + description + "). Статус " + status;
+        return "ID=[" + id + "]: " + name + " (" + description + "). Статус " + status + ".";
     }
 }
