@@ -3,8 +3,6 @@ package practicum.managers;
 import practicum.tasks.Epic;
 import practicum.tasks.Subtask;
 import practicum.tasks.Task;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
@@ -55,5 +53,7 @@ public interface TaskManager {
 
     List<Task> getHistory();
 
-    public void printAllTasks();
+    void printAllTasks();
+
+    void printAllHistory();
 }

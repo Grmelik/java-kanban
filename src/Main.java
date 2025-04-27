@@ -1,12 +1,12 @@
-import practicum.managers.InMemoryTaskManager;
 import practicum.managers.Managers;
+import practicum.managers.TaskManager;
 import practicum.tasks.*;
 
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Поехали!");
-        InMemoryTaskManager tm = new InMemoryTaskManager();
+        TaskManager tm = Managers.getDefault();
 
         // Тестирование
         // Создайте две задачи, а также эпик с двумя подзадачами и эпик с одной подзадачей.
@@ -54,6 +54,20 @@ public class Main {
         tm.updateEpic(epic2);
         tm.printAllTasks();
 
+        // Проверка истории
+        System.out.println('\n' + "== Просмотр истории через вызов тасков, эпиков и подзадач ========================");
+        tm.getSubtaskById(subtask1.getId());
+        tm.getTaskById(task1.getId());
+        tm.getEpicById(epic1.getId());
+        tm.getSubtaskById(subtask1.getId());
+        tm.getTaskById(task2.getId());
+        tm.getEpicById(epic2.getId());
+        tm.getSubtaskById(subtask2.getId());
+        tm.getSubtaskById(subtask3.getId());
+        tm.getTaskById(task2.getId());
+        tm.getSubtaskById(subtask2.getId());
+        tm.printAllHistory();
+
         // И, наконец, попробуйте удалить одну из задач и один из эпиков.
         System.out.println('\n' + "== Удалить одну из задач и один из эпиков ========================================");
         tm.deleteTaskById(task1.getId());
@@ -61,5 +75,6 @@ public class Main {
         //tm.deleteAllTasks();
         //tm.deleteAllEpics();
         tm.printAllTasks();
+        tm.printAllHistory();
     }
 }

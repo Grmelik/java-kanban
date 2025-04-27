@@ -16,8 +16,8 @@ public class Subtask extends Task{
         this.epicId = epicId;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "ID=[" + id + "]: " + name + " (" + description + "). Статус " + status + ".";
-    }
+    }*/
 }

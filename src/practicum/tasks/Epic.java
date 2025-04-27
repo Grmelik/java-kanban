@@ -35,8 +35,8 @@ public class Epic extends Task{
         }
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "ID=[" + id + "]: " + name + " (" + description + "). Статус " + status + ".";
-    }
+    }*/
 }
