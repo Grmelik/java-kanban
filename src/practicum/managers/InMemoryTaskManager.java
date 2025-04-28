@@ -1,6 +1,9 @@
 package practicum.managers;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import practicum.tasks.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -10,13 +13,11 @@ public class InMemoryTaskManager implements TaskManager {
     private Map<Integer, Subtask> subtasksMap = new HashMap<>();
     public HistoryManager historyManager = Managers.getDefaultHistory();
 
-    // Генерация идентификатора
     private int generateId() {
         newId = newId + 1;
         return newId;
     }
 
-    // a.Получение списка всех задач
     @Override
     public List<Task> getAllTasks() {
         return new ArrayList<>(tasksMap.values());
@@ -32,7 +33,6 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(subtasksMap.values());
     }
 
-    // b.Удаление всех задач
     @Override
     public void deleteAllTasks() {
         tasksMap.clear();
@@ -53,29 +53,24 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    // c.Получение по идентификатору
     @Override
     public Task getTaskById(int id) {
-        //System.out.println("A.IMTM.getTaskById(int id) id=" + id + ", tasksMap.get(id)=" + tasksMap.get(id));
         historyManager.add(tasksMap.get(id));
         return tasksMap.get(id);
     }
 
     @Override
     public Epic getEpicById(int id) {
-        //System.out.println("B.IMTM.getEpicById(int id) id=" + id + ", epicsMap.get(id)=" + epicsMap.get(id));
         historyManager.add(epicsMap.get(id));
         return epicsMap.get(id);
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        //System.out.println("C.IMTM.getSubtaskById(int id) id=" + id + ", subtasksMap.get(id)=" + subtasksMap.get(id));
         historyManager.add(subtasksMap.get(id));
         return subtasksMap.get(id);
     }
 
-    // d.Создание. Сам объект должен передаваться в качестве параметра
     @Override
     public void createTask(Task task) {
         task.setId(generateId());
@@ -96,7 +91,6 @@ public class InMemoryTaskManager implements TaskManager {
         subtasksMap.put(subtask.getId(), subtask);
     }
 
-    // e. Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
     @Override
     public void updateTask(Task task) {
         Task savedTask = tasksMap.get(task.getId());
@@ -119,7 +113,6 @@ public class InMemoryTaskManager implements TaskManager {
         updateEpicStatus(subtask.getEpicId());
     }
 
-    // Обновление статуса эпика
     private void updateEpicStatus(int id) {
         ArrayList<Epic> epics = new ArrayList<>(epicsMap.values());
         ArrayList<TaskStatus> statuses = new ArrayList<>();
@@ -170,7 +163,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    // f. Удаление по идентификатору.
     @Override
     public void deleteTaskById(int id) {
         tasksMap.remove(id);
@@ -196,7 +188,6 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(id);
     }
 
-    // g. Получение списка всех подзадач определённого эпика.
     @Override
     public List<Subtask> getSubtasksOfEpic(int epicId) {
         Epic epic = epicsMap.get(epicId);
@@ -214,7 +205,6 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getHistory();
     }
 
-    // Взято из сценария 5-го спринта - печать событий
     @Override
     public void printAllTasks() {
         System.out.println("Задачи:");

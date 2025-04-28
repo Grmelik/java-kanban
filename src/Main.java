@@ -5,11 +5,9 @@ import practicum.tasks.*;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Поехали!");
         TaskManager tm = Managers.getDefault();
 
-        // Тестирование
-        // Создайте две задачи, а также эпик с двумя подзадачами и эпик с одной подзадачей.
+        System.out.println("== Тестирование (2 задачи, эпик с 2 подзадачами и эпик с одной задачей) =================");
         Task task1 = new Task("Работа", "Сформировать отчет", TaskStatus.NEW);
         Task task2 = new Task("Дом", "Поклеить новые обои", TaskStatus.NEW);
         tm.createTask(task1);
@@ -25,13 +23,10 @@ public class Main {
         tm.createEpic(epic2);
         tm.createSubtask(subtask3, epic2.getId());
 
-        // Распечатайте списки эпиков, задач и подзадач через System.out.println(..).
         System.out.println('\n' + "== Просмотр событий (задачи, эпики, подзадачи, история) ==========================");
         tm.printAllTasks();
 
-        // Измените статусы созданных объектов, распечатайте их.
-        // Проверьте, что статус задачи и подзадачи сохранился, а статус эпика рассчитался по статусам подзадач.
-        System.out.println('\n' + "== Измените статусы созданных объектов, распечатайте их ==========================");
+        System.out.println('\n' + "== Изменение статусов созданных объектов =========================================");
         task1.setName("Печать");
         task1.setDescription("Распечатать отчет");
         task1.setStatus(TaskStatus.DONE);
@@ -54,7 +49,6 @@ public class Main {
         tm.updateEpic(epic2);
         tm.printAllTasks();
 
-        // Проверка истории
         System.out.println('\n' + "== Просмотр истории через вызов тасков, эпиков и подзадач ========================");
         tm.getSubtaskById(subtask1.getId());
         tm.getTaskById(task1.getId());
@@ -68,8 +62,7 @@ public class Main {
         tm.getSubtaskById(subtask2.getId());
         tm.printAllHistory();
 
-        // И, наконец, попробуйте удалить одну из задач и один из эпиков.
-        System.out.println('\n' + "== Удалить одну из задач и один из эпиков ========================================");
+        System.out.println('\n' + "== Удаление одной задачи и одного эпика ==========================================");
         tm.deleteTaskById(task1.getId());
         tm.deleteEpicById(epic2.getId());
         //tm.deleteAllTasks();

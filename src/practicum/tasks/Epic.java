@@ -34,9 +34,4 @@ public class Epic extends Task {
             subtasksList.clear();
         }
     }
-
-    /*@Override
-    public String toString() {
-        return "ID=[" + id + "]: " + name + " (" + description + "). Статус " + status + ".";
-    }*/
 }

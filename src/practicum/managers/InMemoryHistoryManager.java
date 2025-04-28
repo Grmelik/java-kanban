@@ -1,12 +1,10 @@
 package practicum.managers;
 
-import practicum.tasks.Task;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import practicum.tasks.Task;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
