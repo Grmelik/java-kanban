@@ -32,8 +32,6 @@ public class MainTest {
     @Test
     public void addNewTask() {
         System.out.println("==== Тест создания задачи ===============================================================");
-        // Похоже я неправильно в 4-м спринте выбрал тип метода при создании объекта.
-        // Надо было выбирать не void, а int для возвращения идентификатора созданного объекта
         final Task task = tm.getTaskById(idTask);
         final Task savedTask = tm.getTaskById(idTask);
 

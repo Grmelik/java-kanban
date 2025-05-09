@@ -7,7 +7,6 @@ import practicum.tasks.Task;
 import practicum.tasks.TaskStatus;
 
 import static org.junit.jupiter.api.Assertions.*;
-//import practicum.managers.InMemoryTaskManager.historyManager;
 
 // ТЕСТ добавления в историю
 class InMemoryHistoryManagerTest {
@@ -27,7 +26,7 @@ class InMemoryHistoryManagerTest {
         System.out.println("==== Тест добавления в историю===========================================================");
         final Task task = tm.getTaskById(idTask);
 
-        hm.add(task); // уже вызывается выше в методе tm.getTaskById
+        hm.add(task);
         final List<Task> history = hm.getHistory();
         assertNotNull(history, "1.После добавления задачи, история не должна быть пустой.");
         assertEquals(1, history.size(), "2.После добавления задачи, история не должна быть пустой.");

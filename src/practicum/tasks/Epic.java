@@ -2,7 +2,7 @@ package practicum.tasks;
 
 import java.util.ArrayList;
 
-public class Epic extends Task{
+public class Epic extends Task {
     private final ArrayList<Integer> subtasksList = new ArrayList<>();
 
     public Epic(String name, String description, TaskStatus status) {
@@ -30,13 +30,8 @@ public class Epic extends Task{
 
     // Очистить список задач
     public void clearSubtasksList() {
-        if (!subtasksList.isEmpty()){
+        if (!subtasksList.isEmpty()) {
             subtasksList.clear();
         }
-    }
-
-    @Override
-    public String toString() {
-        return "ID=[" + id + "]: " + name + " (" + description + "). Статус " + status + ".";
     }
 }
