@@ -19,7 +19,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     File file;
     Path backFile;
 
-    public FileBackedTaskManager() {}
+    public FileBackedTaskManager() {
+
+    }
 
     public FileBackedTaskManager(File file) {
         this.file = file;
@@ -37,7 +39,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public void loadFromFile(File file){
+    public void loadFromFile(File file) {
         FileBackedTaskManager fb = new FileBackedTaskManager(file);
         List<String> taskList = new ArrayList<>();
         Charset charset = Charset.forName("Windows-1251");  // Кодировка Win-1251, иначе в Excel кракозябры вместо русских букв
@@ -99,7 +101,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String str = task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + ","
                 + task.getDescription() + ",";
 
-        if (task.getType() == TaskType.SUBTASK ) {
+        if (task.getType() == TaskType.SUBTASK) {
             str = str + ((Subtask)task).getEpicId();
         }
         str = str + "\n";
