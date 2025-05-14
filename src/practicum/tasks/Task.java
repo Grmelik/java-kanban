@@ -50,11 +50,7 @@ public class Task {
     }
 
     public TaskType getType() {
-        return type;
-    }
-
-    public void setType(TaskType type) {
-        this.type = type;
+        return TaskType.TASK;
     }
 
     @Override

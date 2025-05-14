@@ -104,8 +104,8 @@ public class Support {
         subtask2.setDescription("Забронировать и оплатить отели");
         subtask2.setStatus(TaskStatus.DONE);
         tm.updateSubtask(subtask2);
-        subtask3.setName("Спринт 5");
-        subtask3.setDescription("Сдать задание 6-го спринта");
+        subtask3.setName("Спринт 7");
+        subtask3.setDescription("Сдать задание 7-го спринта");
         subtask3.setStatus(TaskStatus.DONE);
         tm.updateSubtask(subtask3);
         epic1.setName("Командировка");
