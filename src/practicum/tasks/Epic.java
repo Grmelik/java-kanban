@@ -9,29 +9,29 @@ public class Epic extends Task {
         super(name, description, status);
     }
 
-    // Получить список подзадач
     public ArrayList<Integer> getSubtasksList() {
         return subtasksList;
     }
 
-    // Добавить подзадачу в список подзадач по идентификатору подзадачи
     public void addSubtask(int subtaskId) {
         if (subtaskId != getId()) {
             subtasksList.add(subtaskId);
         }
     }
 
-    // Очистить список подзадач по индексу
     public void clearSubtasksList(int index) {
         if (!subtasksList.isEmpty()) {
             subtasksList.remove(index);
         }
     }
 
-    // Очистить список задач
     public void clearSubtasksList() {
         if (!subtasksList.isEmpty()) {
             subtasksList.clear();
         }
+    }
+
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 }
