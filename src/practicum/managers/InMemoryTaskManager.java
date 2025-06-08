@@ -315,10 +315,6 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean isCheckIntersection(Task task) {
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-        //System.out.println("1. isCheckIntersection. ID=[" + task.getId() + "] startTime=" +
-        //        task.getStartTime().format(formatter) + ", endTime=" + task.getEndTime().format(formatter));
-
         LocalDateTime startTime = getPrioritizedTasks().stream()
                 .map(Task::getStartTime)
                 .min(comparing(startDate -> startDate))
@@ -328,11 +324,6 @@ public class InMemoryTaskManager implements TaskManager {
                 .map(Task::getEndTime)
                 .max(comparing(endDate -> endDate))
                 .orElse(null);
-
-        /*if (startTime != null && endTime != null) {
-            System.out.println("2. isCheckIntersection. ID=[" + task.getId() + "] startTime=" +
-                    startTime.format(formatter) + ", endTime=" + endTime.format(formatter));
-        }*/
 
         if (startTime == null && endTime == null) {
             return true;

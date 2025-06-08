@@ -45,7 +45,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public void loadFromFile(File file) {
         FileBackedTaskManager fb = new FileBackedTaskManager(file);
-        //List<String> taskList = new ArrayList<>();
         Charset charset = Charset.forName("Windows-1251");  // Кодировка Win-1251, иначе в Excel кракозябры вместо русских букв
 
         try (BufferedReader br = new BufferedReader(new FileReader(file, charset))) {
@@ -73,7 +72,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public List getTasksFromFile() {
+    public List<String> getTasksFromFile() {
         if (!taskList.isEmpty())
             return taskList;
         return null;
@@ -200,7 +199,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     @Override
     public void createSubtask(Subtask subtask, int epicId) {
         super.createSubtask(subtask, epicId);
-        //subtask.setEpicId(epicId);
         save();
     }
 
