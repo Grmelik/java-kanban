@@ -19,8 +19,8 @@ public class Main {
             int cmd = scanner.nextInt();
 
             if (cmd == 1) {
-                TaskManager tm = Managers.getDefault();
-                Support.testMemory(tm);
+                    TaskManager tm = Managers.getDefault();
+                    Support.testMemory(tm);
             } else if (cmd == 2) {
                 TaskManager tm = Managers.getDefaultFileBacked(dirname, filename);
                 Support.testFile(tm);
@@ -33,7 +33,11 @@ public class Main {
             } else if (cmd == 3) {
                 FileBackedTaskManager fb = Managers.getDefaultFileBacked();
                 fb.loadFromFile(Paths.get(dirname, filename).toFile());
+                fb.printTasksFromFile();
             } else if (cmd == 4) {
+                TaskManager tm = Managers.getDefault();
+                tm.printAllPrioritizedTasks();
+            } else if (cmd == 5) {
                 System.out.println("Завершение работы");
                 return;
             } else {
@@ -48,7 +52,8 @@ public class Main {
         System.out.println("1. Менеджер задач в оперативной памяти");
         System.out.println("2. Сохранение менеджера задач в файл");
         System.out.println("3. Восстановление менеджера задач из файла");
-        System.out.println("4. Выход");
+        System.out.println("4. Вывести список задач по приоритету");
+        System.out.println("5. Выход");
     }
 
 }

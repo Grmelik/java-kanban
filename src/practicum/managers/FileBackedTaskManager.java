@@ -7,6 +7,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +21,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private final Map<Integer, Subtask> subtasksMap = new HashMap<>();
     File file;
     Path backFile;
+    private List<String> taskList = new ArrayList<>();
 
     public FileBackedTaskManager() {
 
@@ -41,7 +45,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public void loadFromFile(File file) {
         FileBackedTaskManager fb = new FileBackedTaskManager(file);
-        List<String> taskList = new ArrayList<>();
+        //List<String> taskList = new ArrayList<>();
         Charset charset = Charset.forName("Windows-1251");  // Кодировка Win-1251, иначе в Excel кракозябры вместо русских букв
 
         try (BufferedReader br = new BufferedReader(new FileReader(file, charset))) {
@@ -67,15 +71,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         for (String task : taskList) {
             fromString(task);
         }
+    }
 
-        printTasksFromFile();
+    public List getTasksFromFile() {
+        if (!taskList.isEmpty())
+            return taskList;
+        return null;
     }
 
     private void save() {
         Charset charset = Charset.forName("Windows-1251");  // Кодировка Win-1251, иначе в Excel кракозябры вместо русских букв
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(backFile.toFile(), charset))) {
-            bw.write("id,type,name,status,description,epic\n");
+            bw.write("id,type,name,status,description,duration,startdate,enddate,epic\n");
             StringBuilder sb = new StringBuilder();
 
             for (Task task : getAllTasks()) {
@@ -97,12 +105,26 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
+    private String getFormattedDate(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
+        return dateTime.format(formatter);
+    }
+
+    private LocalDateTime getDateFromString(String dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
+        return LocalDateTime.parse(dateTime, formatter);
+    }
+
     private String toString(Task task) {
-        String str = task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + ","
-                + task.getDescription() + ",";
+
+        String str = task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + "," +
+                task.getDescription() + "," + task.getDuration().toMinutes() + "," +
+                getFormattedDate(task.getStartTime()) + "," + getFormattedDate(task.getEndTime());
 
         if (task.getType() == TaskType.SUBTASK) {
-            str = str + ((Subtask)task).getEpicId();
+            str = str + "," + ((Subtask)task).getEpicId();
         }
         str = str + "\n";
 
@@ -112,6 +134,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private void fromString(String value) {
         String[] values = value.split(",");
         TaskStatus status = null;
+        Duration duration = Duration.ofMinutes( Integer.parseInt(values[5]));
+        LocalDateTime startTime = getDateFromString(values[6]);
 
         switch (values[3]) {
             case "NEW":
@@ -127,26 +151,26 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         switch (values[1]) {
             case "TASK" -> {
-                Task task = new Task(values[2], values[4], status);
+                Task task = new Task(values[2], values[4], status, duration, startTime);
                 task.setId(Integer.parseInt(values[0]));
                 tasksMap.put(task.getId(), task);
             }
             case "EPIC" -> {
-                Epic epic = new Epic(values[2], values[4], status);
+                Epic epic = new Epic(values[2], values[4], status, duration, startTime);
                 epic.setId(Integer.parseInt(values[0]));
                 epicsMap.put(epic.getId(), epic);
             }
             case "SUBTASK" -> {
-                Subtask subtask = new Subtask(values[2], values[4], status);
+                Subtask subtask = new Subtask(values[2], values[4], status, duration, startTime);
                 subtask.setId(Integer.parseInt(values[0]));
                 subtasksMap.put(subtask.getId(), subtask);
-                Epic epic = epicsMap.get(Integer.parseInt(values[5]));
+                Epic epic = epicsMap.get(Integer.parseInt(values[8]));
                 epic.addSubtask(Integer.parseInt(values[0]));
             }
         }
     }
 
-    private void printTasksFromFile() {
+    public void printTasksFromFile() {
         System.out.println("Задачи:");
         for (Task task : tasksMap.values()) {
             System.out.println(task);
@@ -176,7 +200,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     @Override
     public void createSubtask(Subtask subtask, int epicId) {
         super.createSubtask(subtask, epicId);
-        subtask.setEpicId(epicId);
+        //subtask.setEpicId(epicId);
         save();
     }
 

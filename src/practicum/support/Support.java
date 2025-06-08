@@ -8,26 +8,37 @@ import practicum.tasks.TaskStatus;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Support {
 
     public static void testMemory(TaskManager tm) {
-        Task task1 = new Task("Работа", "Сформировать отчет", TaskStatus.NEW);
-        Task task2 = new Task("Дом", "Поклеить новые обои", TaskStatus.NEW);
+        tm.clearingTaskSet();
+        System.out.println("== Тестирование (Создаём 2 задачи, эпик с 2 подзадачами и эпик с одной задачей) =========");
+        Task task1 = new Task("Работа", "Сформировать отчет", TaskStatus.NEW,
+                Duration.ofMinutes(30), LocalDateTime.of(2025, 5, 20, 10, 00));
+        Task task2 = new Task("Дом", "Поклеить новые обои", TaskStatus.NEW,
+                Duration.ofMinutes(45), LocalDateTime.of(2025, 5, 22, 12, 30));
         tm.createTask(task1);
         tm.createTask(task2);
-        Epic epic1 = new Epic("Путешествие", "Подготовка к поездке", TaskStatus.NEW);
-        Subtask subtask1 = new Subtask("Билеты", "Купить билеты", TaskStatus.NEW);
-        Subtask subtask2 = new Subtask("Отели", "Забронировать отели", TaskStatus.NEW);
+        Epic epic1 = new Epic("Путешествие", "Подготовка к поездке", TaskStatus.NEW,
+                Duration.ofMinutes(0), LocalDateTime.now());
+        Subtask subtask1 = new Subtask("Билеты", "Купить билеты", TaskStatus.NEW,
+                Duration.ofMinutes(300), LocalDateTime.of(2025, 2, 21, 9, 15));
+        Subtask subtask2 = new Subtask("Отели", "Забронировать отели", TaskStatus.NEW,
+                Duration.ofMinutes(15), LocalDateTime.of(2025, 2, 15, 19, 33));
         tm.createEpic(epic1);
         tm.createSubtask(subtask1, epic1.getId());
         tm.createSubtask(subtask2, epic1.getId());
-        Epic epic2 = new Epic("Обучение", "Курс Java", TaskStatus.NEW);
-        Subtask subtask3 = new Subtask("Спринт 4", "Сдать задание 4-го спринта", TaskStatus.NEW);
+        Epic epic2 = new Epic("Обучение", "Курс Java", TaskStatus.NEW,
+                Duration.ofMinutes(0), LocalDateTime.now());
+        Subtask subtask3 = new Subtask("Спринт 4", "Сдать задание 4-го спринта", TaskStatus.NEW,
+                Duration.ofMinutes(480), LocalDateTime.of(2025, 4, 10, 15, 15));
         tm.createEpic(epic2);
         tm.createSubtask(subtask3, epic2.getId());
 
-        System.out.println("== Тестирование (2 задачи, эпик с 2 подзадачами и эпик с одной задачей) =================");
+        System.out.println('\n' + "== Результаты создания ===========================================================");
         tm.printAllTasks();
 
         System.out.println('\n' + "== Изменение статусов созданных объектов =========================================");
@@ -44,8 +55,8 @@ public class Support {
         subtask2.setDescription("Забронировать и оплатить отели");
         subtask2.setStatus(TaskStatus.DONE);
         tm.updateSubtask(subtask2);
-        subtask3.setName("Спринт 5");
-        subtask3.setDescription("Сдать задание 5-го спринта");
+        subtask3.setName("Спринт 8");
+        subtask3.setDescription("Сдать задание 8-го спринта");
         subtask3.setStatus(TaskStatus.DONE);
         tm.updateSubtask(subtask3);
         epic1.setName("Командировка");
@@ -76,18 +87,26 @@ public class Support {
     }
 
     public static void testFile(TaskManager tm) {
-        Task task1 = new Task("Работа", "Сформировать отчет", TaskStatus.NEW);
-        Task task2 = new Task("Дом", "Поклеить новые обои", TaskStatus.NEW);
+        tm.clearingTaskSet();
+        Task task1 = new Task("Работа", "Сформировать отчет", TaskStatus.NEW
+                , Duration.ofMinutes(30), LocalDateTime.of(2025, 5, 20, 10, 10));
+        Task task2 = new Task("Дом", "Поклеить новые обои", TaskStatus.NEW,
+                Duration.ofMinutes(45), LocalDateTime.of(2025, 5, 22, 12, 40));
         tm.createTask(task1);
         tm.createTask(task2);
-        Epic epic1 = new Epic("Путешествие", "Подготовка к поездке", TaskStatus.NEW);
-        Subtask subtask1 = new Subtask("Билеты", "Купить билеты", TaskStatus.NEW);
-        Subtask subtask2 = new Subtask("Отели", "Забронировать отели", TaskStatus.NEW);
+        Epic epic1 = new Epic("Путешествие", "Подготовка к поездке", TaskStatus.NEW,
+                Duration.ofMinutes(0), LocalDateTime.now());
+        Subtask subtask1 = new Subtask("Билеты", "Купить билеты", TaskStatus.NEW,
+                Duration.ofMinutes(300), LocalDateTime.of(2025, 2, 21, 9, 25));
+        Subtask subtask2 = new Subtask("Отели", "Забронировать отели", TaskStatus.NEW,
+                Duration.ofMinutes(15), LocalDateTime.of(2025, 2, 15, 19, 43));
         tm.createEpic(epic1);
         tm.createSubtask(subtask1, epic1.getId());
         tm.createSubtask(subtask2, epic1.getId());
-        Epic epic2 = new Epic("Обучение", "Курс Java", TaskStatus.NEW);
-        Subtask subtask3 = new Subtask("Спринт 4", "Сдать задание 4-го спринта", TaskStatus.NEW);
+        Epic epic2 = new Epic("Обучение", "Курс Java", TaskStatus.NEW,
+                Duration.ofMinutes(0), LocalDateTime.now());
+        Subtask subtask3 = new Subtask("Спринт 4", "Сдать задание 4-го спринта", TaskStatus.NEW,
+                Duration.ofMinutes(480), LocalDateTime.of(2025, 4, 10, 15, 25));
         tm.createEpic(epic2);
         tm.createSubtask(subtask3, epic2.getId());
 
@@ -104,8 +123,8 @@ public class Support {
         subtask2.setDescription("Забронировать и оплатить отели");
         subtask2.setStatus(TaskStatus.DONE);
         tm.updateSubtask(subtask2);
-        subtask3.setName("Спринт 7");
-        subtask3.setDescription("Сдать задание 7-го спринта");
+        subtask3.setName("Спринт 8");
+        subtask3.setDescription("Сдать задание 8-го спринта");
         subtask3.setStatus(TaskStatus.DONE);
         tm.updateSubtask(subtask3);
         epic1.setName("Командировка");
@@ -114,9 +133,6 @@ public class Support {
     }
 
     public static boolean checkFile(String dirname, String filename) {
-        if (Files.exists(Paths.get(dirname, filename)))
-            return true;
-        else
-            return false;
+        return Files.exists(Paths.get(dirname, filename));
     }
 }
