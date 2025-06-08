@@ -88,8 +88,8 @@ public class Support {
 
     public static void testFile(TaskManager tm) {
         tm.clearingTaskSet();
-        Task task1 = new Task("Работа", "Сформировать отчет", TaskStatus.NEW
-                , Duration.ofMinutes(30), LocalDateTime.of(2025, 5, 20, 10, 10));
+        Task task1 = new Task("Работа", "Сформировать отчет", TaskStatus.NEW,
+                Duration.ofMinutes(30), LocalDateTime.of(2025, 5, 20, 10, 10));
         Task task2 = new Task("Дом", "Поклеить новые обои", TaskStatus.NEW,
                 Duration.ofMinutes(45), LocalDateTime.of(2025, 5, 22, 12, 40));
         tm.createTask(task1);
