@@ -73,9 +73,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public List<String> getTasksFromFile() {
-        if (!taskList.isEmpty())
-            return taskList;
-        return null;
+        return taskList;
     }
 
     private void save() {
