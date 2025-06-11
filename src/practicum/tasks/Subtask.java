@@ -1,10 +1,13 @@
 package practicum.tasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Subtask extends Task {
     private int epicId; // Id родительского эпика
 
-    public Subtask(String name, String description, TaskStatus status) {
-        super(name, description, status);
+    public Subtask(String name, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
+        super(name, description, status, duration, startTime);
         this.epicId = -1;
     }
 

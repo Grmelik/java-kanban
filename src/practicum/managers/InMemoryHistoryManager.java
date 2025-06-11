@@ -51,10 +51,18 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        Task task = historyMap.get(id).getData();
         if (historyMap.containsKey(id)) {
+            Task task = historyMap.get(id).getData();
             removeNode(historyMap.get(task.getId()));
             historyMap.remove(id);
+        }
+    }
+
+    @Override
+    public void clearAllHistory() {
+        while (!historyMap.isEmpty()) {
+            for (Task task : getHistory())
+                remove(task.getId());
         }
     }
 
