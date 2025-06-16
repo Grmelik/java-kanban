@@ -3,7 +3,9 @@ package practicum.managers;
 import practicum.tasks.Epic;
 import practicum.tasks.Subtask;
 import practicum.tasks.Task;
+
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
     List<Task> getAllTasks();
@@ -49,4 +51,13 @@ public interface TaskManager {
     void printAllTasks();
 
     void printAllHistory();
+
+    void printAllPrioritizedTasks();
+
+    void printIterator();
+
+    Set<Task> getPrioritizedTasks();
+
+    void clearingTaskSet();
+
 }
