@@ -105,7 +105,7 @@ public class TaskHandler extends BaseHttpHandler {
         }
     }
 
-    private void handleDeleteTask(HttpExchange exchange) throws IOException{
+    private void handleDeleteTask(HttpExchange exchange) throws IOException {
         writeResponse(exchange, "Эндпоинт пока не реализован", 503);
     }
 
