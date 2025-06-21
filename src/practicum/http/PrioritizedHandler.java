@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PrioritizedHandler extends BaseHttpHandler{
+public class PrioritizedHandler extends BaseHttpHandler {
     private final TaskManager taskManager;
 
     public PrioritizedHandler(TaskManager taskManager) {

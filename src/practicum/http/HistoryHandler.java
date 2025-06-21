@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class HistoryHandler extends BaseHttpHandler{
+public class HistoryHandler extends BaseHttpHandler {
     private final TaskManager taskManager;
 
     public HistoryHandler(TaskManager taskManager) {
