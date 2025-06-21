@@ -3,7 +3,15 @@ package practicum.managers;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import practicum.tasks.*;
 
@@ -107,11 +115,10 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createSubtask(Subtask subtask, int epicId) {
+    public void createSubtask(Subtask subtask) {
         subtask.setId(generateId());
         if (isCheckIntersection(subtask)) {
-            subtask.setEpicId(epicId);
-            Epic epic = getEpicById(epicId);
+            Epic epic = getEpicById(subtask.getEpicId());
             epic.addSubtask(subtask.getId());
             subtasksMap.put(subtask.getId(), subtask);
             setEpicDateTime(epic);
@@ -158,7 +165,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epicsMap.get(id);
         if (epics.contains(epic)) {
             status = epic.getStatus();
-            ArrayList<Integer> subtasksList = epic.getSubtasksList();
+            List<Integer> subtasksList = epic.getSubtasksList();
 
             if (!subtasksList.isEmpty()) {
                 for (Map.Entry<Integer, Subtask> entry : subtasksMap.entrySet()) {
@@ -227,7 +234,7 @@ public class InMemoryTaskManager implements TaskManager {
             removingFromPriorityList(getSubtaskById(id));
             Subtask subtask = subtasksMap.remove(id);
             Epic epic = epicsMap.get(subtask.getEpicId());
-            epic.getSubtasksList().remove(id);
+            epic.clearSubtasksList(Integer.valueOf(id));
             updateEpicStatus(subtask.getEpicId());
             historyManager.remove(id);
         }

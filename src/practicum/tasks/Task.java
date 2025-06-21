@@ -10,7 +10,6 @@ public class Task {
     protected String description;
     protected int id;
     protected TaskStatus status;
-    protected TaskType type;
     protected Duration duration;
     protected LocalDateTime startTime;
 
