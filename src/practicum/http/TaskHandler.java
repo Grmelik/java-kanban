@@ -1,9 +1,12 @@
 package practicum.http;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
-import com.google.gson.*;
-import practicum.tasks.*;
-import practicum.managers.*;
+import practicum.managers.TaskManager;
+import practicum.tasks.Endpoint;
+import practicum.tasks.Task;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -25,7 +28,7 @@ public class TaskHandler extends BaseHttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        Endpoint endpoint = getEndpoint(exchange.getRequestURI().getPath(), exchange.getRequestMethod());
+        Endpoint endpoint = getEndpoint(exchange.getRequestURI().getPath(), exchange.getRequestMethod(), "tasks");
 
         switch (endpoint) {
             case GET_ALL: {
@@ -40,8 +43,12 @@ public class TaskHandler extends BaseHttpHandler {
                 handleCreateTask(exchange);
                 break;
             }
-            case DELETE: {
-                handleDeleteTask(exchange);
+            case DELETE_ALL: {
+                handleDeleteTasks(exchange);
+                break;
+            }
+            case DELETE_ID: {
+                handleDeleteTaskById(exchange);
                 break;
             }
             default:
@@ -50,16 +57,24 @@ public class TaskHandler extends BaseHttpHandler {
     }
 
     private void handleGetTasks(HttpExchange exchange) throws IOException {
-        List<Task> allTasks = taskManager.getAllTasks();
-        String response = allTasks.stream()
-                .map(Task::toString)
-                .collect(Collectors.joining("\n"));
-        writeResponse(exchange, response, 200);
+        try {
+            List<Task> allTasks = taskManager.getAllTasks();
+            String response = allTasks.stream()
+                    .map(Task::toString)
+                    .collect(Collectors.joining("\n"));
+
+            if (response.isEmpty()) {
+                writeResponse(exchange, "Не найдены задачи.", 404);
+            } else {
+                writeResponse(exchange, response, 200);
+            }
+        } catch (Exception e) {
+            writeResponse(exchange, "Не найдены задачи.", 404);
+        }
     }
 
     private void handleGetTaskById(HttpExchange exchange) throws IOException {
-        Optional<Integer> taskIdOpt = getTaskId(exchange);
-
+        Optional<Integer> taskIdOpt = getObjectId(exchange);
         if (taskIdOpt.isEmpty()) {
             writeResponse(exchange, "Некорректный идентификатор задачи.", 400);
             return;
@@ -75,15 +90,6 @@ public class TaskHandler extends BaseHttpHandler {
         }
     }
 
-    private Optional<Integer> getTaskId(HttpExchange exchange) {
-        String[] pathParts = exchange.getRequestURI().getPath().split("/");
-        try {
-            return Optional.of(Integer.parseInt(pathParts[2]));
-        } catch (NumberFormatException e) {
-            return Optional.empty();
-        }
-    }
-
     private void handleCreateTask(HttpExchange exchange) throws IOException {
         String requestBody = readText(exchange);
         try {
@@ -93,7 +99,7 @@ public class TaskHandler extends BaseHttpHandler {
                 writeResponse(exchange, "Задача с ID=" + task.getId() + " пересекается с существующими.", 406);
             } else {
                 String response = task.toString();
-                writeResponse(exchange, response, 200);
+                writeResponse(exchange, response, 201);
                 System.out.println("Задача с ID=" + task.getId() + "[" + task.getName() + "] успешно создана.");
             }
         } catch (JsonSyntaxException e) {
@@ -105,9 +111,45 @@ public class TaskHandler extends BaseHttpHandler {
         }
     }
 
-    private void handleDeleteTask(HttpExchange exchange) throws IOException {
-        writeResponse(exchange, "Эндпоинт пока не реализован", 503);
+    private void handleDeleteTasks(HttpExchange exchange) throws IOException {
+        try {
+            List<Task> allTasks = taskManager.getAllTasks();
+            if (allTasks.isEmpty()) {
+                writeResponse(exchange, "Не найдены задачи для удаления.", 404);
+                return;
+            } else {
+                taskManager.deleteAllTasks();
+            }
+            try {
+                allTasks = taskManager.getAllTasks();
+                if (allTasks.isEmpty()) {
+                    writeResponse(exchange, "Все задачи удалены.", 200);
+                } else {
+                    writeResponse(exchange, "Не все задачи удалены.", 400);
+                }
+            } catch (Exception e) {
+                writeResponse(exchange, "Все задачи удалены.", 200);
+            }
+        } catch (Exception e) {
+            writeResponse(exchange, "Не найдены задачи для удаления.", 404);
+        }
     }
 
+    private void handleDeleteTaskById(HttpExchange exchange) throws IOException {
+        Optional<Integer> taskIdOpt = getObjectId(exchange);
+        if (taskIdOpt.isEmpty()) {
+            writeResponse(exchange, "Некорректный идентификатор задачи.", 400);
+            return;
+        }
 
+        int taskId = taskIdOpt.get();
+        try {
+            Task task = taskManager.getTaskById(taskId);
+            String response = task.toString();
+            taskManager.deleteTaskById(taskId);
+            writeResponse(exchange, "Задача с идентификатором " + taskId + " удалена.", 200);
+        } catch (Exception e) {
+            writeResponse(exchange, "Задачи с идентификатором " + taskId + " не существует.", 404);
+        }
+    }
 }

@@ -7,6 +7,7 @@ import practicum.tasks.Endpoint;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 public abstract class BaseHttpHandler implements HttpHandler {
 
@@ -22,22 +23,6 @@ public abstract class BaseHttpHandler implements HttpHandler {
         return new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
     }
 
-    protected void sendText(HttpExchange exchange, String responseString, int responseCode) throws IOException {
-        byte[] response = responseString.getBytes(StandardCharsets.UTF_8);
-        exchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
-        exchange.sendResponseHeaders(responseCode, response.length);
-        exchange.getResponseBody().write(response);
-        exchange.close();
-    }
-
-    protected void sendNotFound(HttpExchange exchange, String text) throws IOException {
-
-    }
-
-    protected void sendHasInteractions() {
-
-    }
-
     private static boolean isInteger(String input) {
         if (input == null || input.isEmpty()) {
             return false;
@@ -45,21 +30,38 @@ public abstract class BaseHttpHandler implements HttpHandler {
         return input.matches("-?\\d+(\\.\\d+)?");
     }
 
-    protected Endpoint getEndpoint(String requestPath, String requestMethod) {
+    protected Endpoint getEndpoint(String requestPath, String requestMethod, String keyWord) {
         String[] pathParts = requestPath.split("/");
 
-        if (pathParts.length == 3 && isInteger(pathParts[2])) {
-            return Endpoint.GET_ID;
-        }
-        if (requestMethod.equals("GET")) {
-            return Endpoint.GET_ALL;
-        }
-        if (requestMethod.equals("POST")) {
-            return Endpoint.POST;
-        }
-        if (requestMethod.equals("DELETE")) {
-            return Endpoint.DELETE;
+        if (pathParts[1].equals(keyWord)) {
+            if (requestMethod.equals("GET") && pathParts.length == 4 && pathParts[3].equals("subtasks")) {
+                return Endpoint.GET_ID_SUBTASKS;
+            }
+            if (requestMethod.equals("GET") && pathParts.length == 3) {
+                return Endpoint.GET_ID;
+            }
+            if (requestMethod.equals("GET") && pathParts.length == 2) {
+                return Endpoint.GET_ALL;
+            }
+            if (requestMethod.equals("POST")) {
+                return Endpoint.POST;
+            }
+            if (requestMethod.equals("DELETE") && pathParts.length == 3) {
+                return Endpoint.DELETE_ID;
+            }
+            if (requestMethod.equals("DELETE") && pathParts.length == 2) {
+                return Endpoint.DELETE_ALL;
+            }
         }
         return Endpoint.UNKNOWN;
+    }
+
+    protected Optional<Integer> getObjectId(HttpExchange exchange) {
+        String[] pathParts = exchange.getRequestURI().getPath().split("/");
+        try {
+            return Optional.of(Integer.parseInt(pathParts[2]));
+        } catch (NumberFormatException e) {
+            return Optional.empty();
+        }
     }
 }

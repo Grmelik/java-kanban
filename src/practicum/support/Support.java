@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Support {
 
@@ -23,20 +24,21 @@ public class Support {
         tm.createTask(task1);
         tm.createTask(task2);
         Epic epic1 = new Epic("Путешествие", "Подготовка к поездке", TaskStatus.NEW,
-                Duration.ofMinutes(0), LocalDateTime.now());
-        Subtask subtask1 = new Subtask("Билеты", "Купить билеты", TaskStatus.NEW,
-                Duration.ofMinutes(300), LocalDateTime.of(2025, 2, 21, 9, 15));
-        Subtask subtask2 = new Subtask("Отели", "Забронировать отели", TaskStatus.NEW,
-                Duration.ofMinutes(15), LocalDateTime.of(2025, 2, 15, 19, 33));
+                Duration.ofMinutes(0), LocalDateTime.now(), List.of());
+        Subtask subtask1 = new Subtask("Билеты", "Купить билеты", TaskStatus.NEW, Duration.ofMinutes(300),
+                LocalDateTime.of(2025, 2, 21, 9, 15), epic1.getId());
+        Subtask subtask2 = new Subtask("Отели", "Забронировать отели", TaskStatus.NEW, Duration.ofMinutes(15),
+                LocalDateTime.of(2025, 2, 15, 19, 33), epic1.getId());
         tm.createEpic(epic1);
-        tm.createSubtask(subtask1, epic1.getId());
-        tm.createSubtask(subtask2, epic1.getId());
+        tm.createSubtask(subtask1);
+        tm.createSubtask(subtask2);
         Epic epic2 = new Epic("Обучение", "Курс Java", TaskStatus.NEW,
-                Duration.ofMinutes(0), LocalDateTime.now());
+                Duration.ofMinutes(0), LocalDateTime.now(), List.of());
         Subtask subtask3 = new Subtask("Спринт 4", "Сдать задание 4-го спринта", TaskStatus.NEW,
-                Duration.ofMinutes(480), LocalDateTime.of(2025, 4, 10, 15, 15));
+                Duration.ofMinutes(480), LocalDateTime.of(2025, 4, 10, 15, 15),
+                epic1.getId());
         tm.createEpic(epic2);
-        tm.createSubtask(subtask3, epic2.getId());
+        tm.createSubtask(subtask3);
 
         System.out.println('\n' + "== Результаты создания ===========================================================");
         tm.printAllTasks();
@@ -95,20 +97,22 @@ public class Support {
         tm.createTask(task1);
         tm.createTask(task2);
         Epic epic1 = new Epic("Путешествие", "Подготовка к поездке", TaskStatus.NEW,
-                Duration.ofMinutes(0), LocalDateTime.now());
-        Subtask subtask1 = new Subtask("Билеты", "Купить билеты", TaskStatus.NEW,
-                Duration.ofMinutes(300), LocalDateTime.of(2025, 2, 21, 9, 25));
+                Duration.ofMinutes(0), LocalDateTime.now(), List.of());
+        Subtask subtask1 = new Subtask("Билеты", "Купить билеты", TaskStatus.NEW, Duration.ofMinutes(300),
+                LocalDateTime.of(2025, 2, 21, 9, 25), epic1.getId());
         Subtask subtask2 = new Subtask("Отели", "Забронировать отели", TaskStatus.NEW,
-                Duration.ofMinutes(15), LocalDateTime.of(2025, 2, 15, 19, 43));
+                Duration.ofMinutes(15), LocalDateTime.of(2025, 2, 15, 19, 43),
+                epic1.getId());
         tm.createEpic(epic1);
-        tm.createSubtask(subtask1, epic1.getId());
-        tm.createSubtask(subtask2, epic1.getId());
+        tm.createSubtask(subtask1);
+        tm.createSubtask(subtask2);
         Epic epic2 = new Epic("Обучение", "Курс Java", TaskStatus.NEW,
-                Duration.ofMinutes(0), LocalDateTime.now());
+                Duration.ofMinutes(0), LocalDateTime.now(), List.of());
         Subtask subtask3 = new Subtask("Спринт 4", "Сдать задание 4-го спринта", TaskStatus.NEW,
-                Duration.ofMinutes(480), LocalDateTime.of(2025, 4, 10, 15, 25));
+                Duration.ofMinutes(480), LocalDateTime.of(2025, 4, 10, 15, 25),
+                epic1.getId());
         tm.createEpic(epic2);
-        tm.createSubtask(subtask3, epic2.getId());
+        tm.createSubtask(subtask3);
 
         task1.setName("Печать");
         task1.setDescription("Распечатать отчет");
