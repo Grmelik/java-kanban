@@ -2,7 +2,13 @@ package practicum.managers;
 
 import practicum.tasks.*;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -153,12 +159,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 tasksMap.put(task.getId(), task);
             }
             case "EPIC" -> {
-                Epic epic = new Epic(values[2], values[4], status, duration, startTime);
+                Epic epic = new Epic(values[2], values[4], status, duration, startTime, List.of());
                 epic.setId(Integer.parseInt(values[0]));
                 epicsMap.put(epic.getId(), epic);
             }
             case "SUBTASK" -> {
-                Subtask subtask = new Subtask(values[2], values[4], status, duration, startTime);
+                Subtask subtask = new Subtask(values[2], values[4], status, duration, startTime,
+                        Integer.parseInt(values[8]));
                 subtask.setId(Integer.parseInt(values[0]));
                 subtasksMap.put(subtask.getId(), subtask);
                 Epic epic = epicsMap.get(Integer.parseInt(values[8]));
@@ -195,8 +202,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void createSubtask(Subtask subtask, int epicId) {
-        super.createSubtask(subtask, epicId);
+    public void createSubtask(Subtask subtask) {
+        super.createSubtask(subtask);
         save();
     }
 
